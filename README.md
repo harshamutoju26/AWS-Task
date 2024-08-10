@@ -1,4 +1,21 @@
-# AWS-Task
+# Hello World Web Application with ASP.NET Core
+This repository contains a simple "Hello World" web application built with ASP.NET Core. It displays a custom greeting message that includes the current server time. Additionally, it logs each request to a file (log.txt) and standard output, including the timestamp and the requested path.
+## Prerequisites
+Before you begin, ensure you have the following installed on your machine:
+ - Visual Studio .NET (version 5.0.0 or higher)
+ - NET SDK (version 6.0 or higher)
+## Steps to create the ASP.NET Core application:
+Step-1. Open visual studio, create a new project, name it, select the version, select the templates, and finally click create project
+
+Step-2. Create a new class startup.cs and implement it
+
+Step-3. Add middleware for Request Logging in the project
+
+Step-4. Build the project
+
+Step-5. Debug it to run the application.
+
+The application will start and display the "Hello World!" greeting message along with the current server time when accessed through a web browser and log each request to a file named log.txt including the timestamp and the requested path.
 # Deploying an ASP.NET Web Application on AWS EC2 Instances
 ## Prerequisites for AWS
 Before you start, ensure you have the following prerequisites:
@@ -68,7 +85,7 @@ Step-5. Generate an AWS Access Key ID and Secret Access Key from the AWS Managem
 ### Creating an EC2 Instance Using Terraform:
 Step-1. Set Up Terraform Configuration: Create a directory for your Terraform configuration files.
 
-Step-2. Create an ec2 instance
+Step-2. Create an ec2 instance by writing terraform terraform 
 
 Step-3. Initialize Terraform
 ```bash
@@ -99,9 +116,11 @@ Step-4. Test the Web Application
 ### Steps to Deploy ASP.NET Web Application on Linux Server with Terraform
 Step-1. Set Up Terraform Configuration
 
-Step-2. Create an linux_ec2 instance
+Step-2. Create an linux_ec2 instance by terraform 
 
-Step-3. Create Elastic Load Balancer
+Step-3. Create all necessary vpc, subnets, security groups, route tables, internet gateway by writing terrafornm code
+
+Step-3. Create Elastic Load Balancer by terraform
 
 Step-4. Deploy ASP.NET Web Application
 
