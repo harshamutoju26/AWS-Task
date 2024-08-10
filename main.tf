@@ -14,7 +14,7 @@ provider "aws" {
   secret_key  = "Enter secret key"
 }
 
-# Create a VPC
+# Creating VPC
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
@@ -25,12 +25,7 @@ resource "aws_vpc" "main" {
   }
 }
 
-# Output the VPC ID
-output "vpc_id" {
-  value = aws_vpc.main.id
-}
-
-# Create public subnets in two different availability zones
+# Creating public subnets in two different availability zones
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
@@ -53,7 +48,7 @@ resource "aws_subnet" "public_b" {
   }
 }
 
-# Create an Internet Gateway
+# Creating an Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -61,7 +56,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Create Route Table for Public Subnets
+# Creating Route Table for Public Subnets
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -75,28 +70,20 @@ resource "aws_route_table" "public" {
   }
 }
 
-# Create a second Route Table for private subnets
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name = "private-route-table"
-  }
-}
-
-# Associate the public_a subnet with the public route table
+# Associating public_a subnet with route table
 resource "aws_route_table_association" "public_a" {
   subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.public.id
 }
 
-# Associate the public_b subnet with the public route table
+# Associating public_b subnet with route table
 resource "aws_route_table_association" "public_b" {
   subnet_id      = aws_subnet.public_b.id
   route_table_id = aws_route_table.public.id
 }
 
-# Create a security group for the EC2 instances in public_a subnet
+# Creating security group for instances in subnet
 resource "aws_security_group" "sg_public_a" {
   vpc_id = aws_vpc.main.id
 
@@ -119,7 +106,7 @@ resource "aws_security_group" "sg_public_a" {
   }
 }
 
-# Create a security group for the EC2 instances in public_b subnet
+# Creating security group for instances in subnet
 resource "aws_security_group" "sg_public_b" {
   vpc_id = aws_vpc.main.id
 
@@ -142,31 +129,31 @@ resource "aws_security_group" "sg_public_b" {
   }
 }
 
-# Create 1 Windows EC2 instance in public_a subnet
+# Creating instance in subnet
 resource "aws_instance" "windows_a" {
-  ami                  = "ami-049f0f6f51145ff40" 
+  ami                  = "Specify ami according to instance(Windows/Linux)" 
   instance_type        = "t2.micro"
   subnet_id            = aws_subnet.public_a.id
   vpc_security_group_ids = [aws_security_group.sg_public_a.id]
 
   tags = {
-    Name = "windows-instance-a"
+    Name = "instance-a"
   }
 }
 
-# Create 1 Windows EC2 instance in public_b subnet
+# Creating instance in subnet
 resource "aws_instance" "windows_b" {
-  ami                  = "ami-049f0f6f51145ff40" 
+  ami                  = "Specify ami according to instance(Windows/Linux)" 
   instance_type        = "t2.micro"
   subnet_id            = aws_subnet.public_b.id
   vpc_security_group_ids = [aws_security_group.sg_public_b.id]
 
   tags = {
-    Name = "windows-instance-b"
+    Name = "instance-b"
   }
 }
 
-# Create a Load Balancer
+# Creating Load Balancer
 resource "aws_lb" "app_lb" {
   name               = "app-lb"
   internal           = false
@@ -180,7 +167,7 @@ resource "aws_lb" "app_lb" {
   }
 }
 
-# Create a Target Group for the Load Balancer
+# Creating Target Group for Load Balancer
 resource "aws_lb_target_group" "app_tg" {
   name     = "app-tg"
   port     = 80
@@ -188,7 +175,7 @@ resource "aws_lb_target_group" "app_tg" {
   vpc_id   = aws_vpc.main.id
 }
 
-# Register the EC2 instances with the target group
+# Register instances with target group
 resource "aws_lb_target_group_attachment" "app_tg_attachment_a" {
   target_group_arn = aws_lb_target_group.app_tg.arn
   target_id        = aws_instance.windows_a.id
@@ -201,7 +188,7 @@ resource "aws_lb_target_group_attachment" "app_tg_attachment_b" {
   port             = 80
 }
 
-# Create a Listener for the Load Balancer
+# Creating Listener for Load Balancer
 resource "aws_lb_listener" "app_listener" {
   load_balancer_arn = aws_lb.app_lb.arn
   port              = 80
@@ -213,7 +200,12 @@ resource "aws_lb_listener" "app_listener" {
   }
 }
 
-# Output the Load Balancer DNS name
+# Output VPC ID
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
+
+# Output Load Balancer DNS name
 output "lb_dns_name" {
   value = aws_lb.app_lb.dns_name
 }

@@ -1,0 +1,8 @@
+[09:50:38] Request: /
+[09:50:38] Request: /favicon.ico
+[09:50:46] Request: /
+[09:50:47] Request: /favicon.ico
+[09:50:54] Request: /
+[09:50:55] Request: /favicon.ico
+[09:51:01] Request: /
+[09:51:01] Request: /favicon.ico
